@@ -21,83 +21,46 @@ summary:
 NetApp has developed a set of ESXi host multipathing and HBA timeout settings for proper behavior with ONTAP based on NetApp testing. These are easily set using ONTAP tools for VMware vSphere. From the Summary dashboard, click Edit Settings in the Host Systems portlet or right-click the host in vCenter, then navigate to ONTAP tools > Set Recommended Values. Here are the currently recommended host settings with the 9.8 release.
 
 |===
-|Host setting
-|NetApp recommended value
-|ESXi advanced configuration
-|
-|VMFS3.HardwareAcceleratedLocking
-|Leave as set (VMware default is 1).
-|VMFS3.EnableBlockDelete
-|Leave as set (VMware default is 0, but this is not needed for VMFS6). For more information, see VMware KB article .
-|NFS Settings
-|
-|Net.TcpipHeapSize
-|vSphere 6.0 or later, set to 32.
-All other NFS configurations, set to 30.
-|Net.TcpipHeapMax
-|Set to 1536 for vSphere 6.0 and later.
-|NFS.MaxVolumes
-|vSphere 6.0 or later, set to 256.
-All other NFS configurations, set to 64.
-|NFS41.MaxVolumes
-|vSphere 6.0 or later, set to 256.
-|NFS.MaxQueueDepth
-|vSphere 6.0 or later, set to 128.
-|NFS.HeartbeatMaxFailures
-|Set to 10 for all NFS configurations.
-|NFS.HeartbeatFrequency
-|Set to 12 for all NFS configurations.
-|NFS.HeartbeatTimeout
-|Set to 5 for all NFS configurations.
-|SunRPC.MaxConnPerIP
-|vSphere 7.0 or later, set to 128.
-|FC/FCoE Settings
-|
-|Path selection policy
-|Set to RR (round robin) when FC paths with ALUA are used. Set to FIXED for all other configurations. Setting this value to RR helps provide load balancing across all active/optimized paths. The value FIXED is for older, non-ALUA configurations and helps prevent proxy I/O. In other words, it helps keep I/O from going to the other node of a high-availability (HA) pair in an environment that has Data ONTAP operating in 7-Mode.
-|Disk.QFullSampleSize
-|Set to 32 for all configurations. Setting this value helps prevent I/O errors.
-|Disk.QFullThreshold
-|Set to 8 for all configurations. Setting this value helps prevent I/O errors.
-|Emulex FC HBA timeouts
-|Use the default value.
-|QLogic FC HBA timeouts
-|Use the default value.
-|iSCSI Settings
-|
-|Path selection policy
-|Set to RR (round robin) for all iSCSI paths. Setting this value to RR helps provide load balancing across all active/optimized paths.
-|Disk.QFullSampleSize
-|Set to 32 for all configurations. Setting this value helps prevent I/O errors.
-|Disk.QFullThreshold
-|Set to 8 for all configurations. Setting this value helps prevent I/O errors.
+| ESXi Host setting | NetApp recommended value | Notes
+| Category: ESXi advanced configuration |---|---
+| VMFS3.HardwareAcceleratedLocking | Leave as set | VMware default is 1 
+| VMFS3.EnableBlockDelete |Leave as set|VMware default is 0, but this is not needed for VMFS6. For more information, see VMware KB article 2007427
+| Category: NFS Settings |---|---
+| Net.TcpipHeapSize | vSphere 6.0 or later: set to 32 | All other NFS configurations, set to 30
+| Net.TcpipHeapMax | vSphere 6.0 or later: set to 1536 | 
+| NFS.MaxVolumes | vSphere 6.0 or later: set to 256 | All other NFS configurations, set to 64
+| NFS41.MaxVolumes | vSphere 6.0 or later: set to 256 |
+| NFS.MaxQueueDepth | vSphere 6.0 or later, set to 128 |
+| NFS.HeartbeatMaxFailures | all NFS configuration: Set to 10 |
+| NFS.HeartbeatFrequency | all NFS configuration: Set to 12 |
+| NFS.HeartbeatTimeout | all NFS configurations: set to 5 |
+| SunRPC.MaxConnPerIP | vSphere 7.0 or later: set to 128 |
+| Category: FC/FCoE Settings |---|---
+|Path selection policy | Set to RR (round robin) when FC paths with ALUA are used. Set to FIXED for all other configurations | Setting this value to RR helps provide load balancing across all active/optimized paths. The value FIXED is for older, non-ALUA configurations and helps prevent proxy I/O. In other words, it helps keep I/O from going to the other node of a high-availability (HA) pair in an environment that has Data ONTAP operating in 7-Mode
+| Disk.QFullSampleSize | all configurations: set to 32 | Setting this value helps prevent I/O errors
+| Disk.QFullThreshold | all configurations: set to 8 | Setting this value helps prevent I/O errors.
+| Emulex FC HBA timeouts | Use the default value | 
+| QLogic FC HBA timeouts | Use the default value | 
+| Category: iSCSI Settings |---|---
+| Path selection policy | all iSCSI paths: set to RR (round robin) | Setting this value to RR helps provide load balancing across all active/optimized paths.
+| Disk.QFullSampleSize | all configurations: set to 32 | Setting this value helps prevent I/O errors.
+| Disk.QFullThreshold | all configurations: set to 8 | Setting this value helps prevent I/O errors.
 |===
 
-ONTAP tools also specify certain default settings when creating ONTAP FlexVol volumes and LUNs:
+ONTAP tools also uses certain default settings when creating ONTAP FlexVol volumes and LUNs:
 
 |===
-|ONTAP tool
-|Default setting
-|Snapshot reserve (-percent-snapshot-space)
-|0
-|Fractional reserve (-fractional-reserve)
-|0
-|Access time update (-atime-update)
-|False
-|Minimum readahead (-min-readahead)
-|False
-|Scheduled Snapshot copies
-|None
-|Storage efficiency
-|Enabled
-|Volume guarantee
-|None (thin provisioned)
-|Volume Autosize
-|grow_shrink
-|LUN space reservation
-|Disabled
-|LUN space allocation
-|Enabled
+| ONTAP tools | Setting Used
+| Snapshot reserve (-percent-snapshot-space) | 0
+| Fractional reserve (-fractional-reserve) | 0
+| Access time update (-atime-update) | False
+| Minimum readahead (-min-readahead) | False
+| Scheduled Snapshot copies | None
+| Storage efficiency | Enabled
+| Volume guarantee | None (thin provisioned)
+| Volume Autosize | grow_shrink
+| LUN space reservation | Disabled
+| LUN space allocation | Enabled
 |===
 
 == Other host multipath configuration considerations
